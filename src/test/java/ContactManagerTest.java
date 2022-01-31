@@ -33,6 +33,8 @@ class ContactManagerTest {
     }
 
     @Test
+    @DisplayName("Should Create Contact")
+    // @Disabled    <--- Use this tag if you want to disable a test
     // Is the list empty after we try to create a contact?
     public void shouldCreateContact(){
         contactManager.addContact("Homi","Bodhanwala", "0123456789");
@@ -130,58 +132,65 @@ class ContactManagerTest {
         assertEquals(1,contactManager.getAllContacts().size());
     }
 
-    // Repeated Tests:
-    @DisplayName("Repeat Contact Creation Test 5 times")
-    @RepeatedTest(value = 5, name = "Repeating Contact Creation Test " +
-                                    "{currentRepetition} of {totalRepetitions}")
-    public void shouldTestContactCreationRepeatedly(){
-        contactManager.addContact("Homi","Bodhanwala", "0123456789");
-        assertFalse(contactManager.getAllContacts().isEmpty());
-        assertEquals(1,contactManager.getAllContacts().size());
+    // These nested tags are used for logical grouping, makes things more organized
+    @Nested
+    class RepeatedNestedTest{
+        // Repeated Tests:
+        @DisplayName("Repeat Contact Creation Test 5 times")
+        @RepeatedTest(value = 5, name = "Repeating Contact Creation Test " +
+                "{currentRepetition} of {totalRepetitions}")
+        public void shouldTestContactCreationRepeatedly(){
+            contactManager.addContact("Homi","Bodhanwala", "0123456789");
+            assertFalse(contactManager.getAllContacts().isEmpty());
+            assertEquals(1,contactManager.getAllContacts().size());
+        }
     }
 
-    // Parameterized Testing
-    @DisplayName("Contact Creation Using Different Parameters")
-    @ParameterizedTest
-    @ValueSource(strings = {"0123456789", "0123456789", "0123456789"})
-    public void shouldTestContactCreationUsingValueSource(String phoneNumber){
-        contactManager.addContact("Homi","Bodhanwala", phoneNumber);
-        assertFalse(contactManager.getAllContacts().isEmpty());
-        assertEquals(1,contactManager.getAllContacts().size());
-    }
+    @Nested
+    class ParameterizedNestedTest{
+        // Parameterized Testing
+        @DisplayName("Contact Creation Using Different Parameters")
+        @ParameterizedTest
+        @ValueSource(strings = {"0123456789", "0123456789", "0123456789"})
+        public void shouldTestContactCreationUsingValueSource(String phoneNumber){
+            contactManager.addContact("Homi","Bodhanwala", phoneNumber);
+            assertFalse(contactManager.getAllContacts().isEmpty());
+            assertEquals(1,contactManager.getAllContacts().size());
+        }
 
-    // Parameterized Testing w/ Method Source
-    @DisplayName("Contact Creation Using Method Source")
-    @ParameterizedTest
-    @MethodSource("phoneNumberList")
-    public void shouldTestContactCreationUsingMethodSource(String phoneNumber){
-        contactManager.addContact("Homi","Bodhanwala", phoneNumber);
-        assertFalse(contactManager.getAllContacts().isEmpty());
-        assertEquals(1,contactManager.getAllContacts().size());
-    }
-    // method used in the test above ^^^
-    private static List<String> phoneNumberList(){
-        return Arrays.asList("0123456789", "0123456987", "0123456897");
-    }
+        // Parameterized Testing w/ Method Source
+        @DisplayName("Contact Creation Using Method Source")
+        @ParameterizedTest
+        @MethodSource("phoneNumberList")
+        public void shouldTestContactCreationUsingMethodSource(String phoneNumber){
+            contactManager.addContact("Homi","Bodhanwala", phoneNumber);
+            assertFalse(contactManager.getAllContacts().isEmpty());
+            assertEquals(1,contactManager.getAllContacts().size());
+        }
+        // method used in the test above ^^^
+        private static List<String> phoneNumberList(){
+            return Arrays.asList("0123456789", "0123456987", "0123456897");
+        }
 
-    // Parameterized Testing w/ CSV Source
-    @DisplayName("Contact Creation Using Method Source")
-    @ParameterizedTest
-    @CsvSource({"0123456789", "0123456987", "0123456897"})
-    public void shouldTestContactCreationUsingCSVSource(String phoneNumber){
-        contactManager.addContact("Homi","Bodhanwala", phoneNumber);
-        assertFalse(contactManager.getAllContacts().isEmpty());
-        assertEquals(1,contactManager.getAllContacts().size());
-    }
+        // Parameterized Testing w/ CSV Source
+        @DisplayName("Contact Creation Using Method Source")
+        @ParameterizedTest
+        @CsvSource({"0123456789", "0123456987", "0123456897"})
+        public void shouldTestContactCreationUsingCSVSource(String phoneNumber){
+            contactManager.addContact("Homi","Bodhanwala", phoneNumber);
+            assertFalse(contactManager.getAllContacts().isEmpty());
+            assertEquals(1,contactManager.getAllContacts().size());
+        }
 
-    // Parameterized Testing w/ CSV file Source
-    @DisplayName("Contact Creation Using Method Source")
-    @ParameterizedTest
-    @CsvFileSource(resources = "/data.csv")
-    public void shouldTestContactCreationUsingCSVFileSource(String phoneNumber){
-        contactManager.addContact("Homi","Bodhanwala", phoneNumber);
-        assertFalse(contactManager.getAllContacts().isEmpty());
-        assertEquals(1,contactManager.getAllContacts().size());
+        // Parameterized Testing w/ CSV file Source
+        @DisplayName("Contact Creation Using Method Source")
+        @ParameterizedTest
+        @CsvFileSource(resources = "/data.csv")
+        public void shouldTestContactCreationUsingCSVFileSource(String phoneNumber){
+            contactManager.addContact("Homi","Bodhanwala", phoneNumber);
+            assertFalse(contactManager.getAllContacts().isEmpty());
+            assertEquals(1,contactManager.getAllContacts().size());
+        }
     }
 
 }
